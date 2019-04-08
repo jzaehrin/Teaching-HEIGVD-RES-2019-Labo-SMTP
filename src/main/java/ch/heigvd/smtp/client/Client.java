@@ -26,6 +26,14 @@ public class Client {
     }
 
     public void sendEmail(MailHeader header, MailContent content) {
+        while(true) {
+            String response = input.nextLine();
+            System.out.println(response);
+
+            if(response.contains("[0-9]{3} "))
+                break;
+        }
+        
         output.print(SMTPMessages.hello("local"));
 
         while(true) {
