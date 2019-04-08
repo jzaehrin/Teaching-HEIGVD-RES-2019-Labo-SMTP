@@ -23,7 +23,7 @@ public class Client {
         input  = new Scanner(new BufferedInputStream(client.getInputStream()));
     }
 
-    public void sendEmail(MailHeader header, MailContent) {
+    public void sendEmail(MailHeader header, MailContent content) {
 
     }
 }
