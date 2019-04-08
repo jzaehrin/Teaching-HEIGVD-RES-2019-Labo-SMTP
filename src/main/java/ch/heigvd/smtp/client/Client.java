@@ -7,6 +7,8 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
 
+import ch.heigvd.smtp.client.SMTPMessages;
+
 public class Client {
     private String host;
     private Integer port;
@@ -19,11 +21,63 @@ public class Client {
         this.port = port;
 
         client = new Socket(host, port);
-        output = new PrintWriter(new BufferedOutputStream(client.getOutputStream()));
+        output = new PrintWriter(new BufferedOutputStream(client.getOutputStream()), true);
         input  = new Scanner(new BufferedInputStream(client.getInputStream()));
     }
 
     public void sendEmail(MailHeader header, MailContent content) {
+        output.print(SMTPMessages.hello("local"));
 
+        while(!input.hasNextLine());
+
+        while (input.hasNextLine())
+            System.out.println(input.nextLine());
+
+        output.print(SMTPMessages.headerFrom(header.getSender()));
+
+        while(!input.hasNextLine());
+
+        while (input.hasNextLine())
+            System.out.println(input.nextLine());
+
+        for(String receiver : header.getReceivers()) {
+            output.print(SMTPMessages.headerTo(receiver));
+
+            while(!input.hasNextLine());
+
+            while (input.hasNextLine())
+                System.out.println(input.nextLine());
+        }
+
+        output.print(SMTPMessages.startData());
+
+        while(!input.hasNextLine());
+
+        while (input.hasNextLine())
+            System.out.println(input.nextLine());
+
+        output.print(SMTPMessages.dataFrom(header.getSender()));
+
+        for(String receiver : header.getReceivers()) {
+            output.print(SMTPMessages.dataTo(receiver));
+
+            while(!input.hasNextLine());
+
+            while (input.hasNextLine())
+                System.out.println(input.nextLine());
+        }
+
+        output.print(SMTPMessages.dataSubject(content.getSubject()));
+
+        output.println(content.getMessage());
+
+        output.print(SMTPMessages.endData());
+
+        while(!input.hasNextLine());
+
+        while (input.hasNextLine())
+            System.out.println(input.nextLine());
+
+        output.print(SMTPMessages.quit());
     }
 }
