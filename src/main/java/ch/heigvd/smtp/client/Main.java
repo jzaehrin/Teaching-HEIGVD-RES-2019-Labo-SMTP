@@ -9,6 +9,17 @@ public class Main {
 
         try {
             Client client = new Client(host, port);
+
+            MailHeader mh = new MailHeader();
+            mh.setSender("sender@prank.org");
+            mh.addReceiver("receiver1@pranked.org");
+            mh.addReceiver("receiver2@pranked.org");
+
+            MailContent mc = new MailContent();
+            mc.setSubject("Subject test");
+            mc.setMessage("Message test");
+
+            client.sendEmail(mh, mc);
         } catch (IOException e) {
             e.printStackTrace();
         }
