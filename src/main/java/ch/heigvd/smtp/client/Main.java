@@ -4,11 +4,12 @@ import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) {
-        String host = "localhost";
+        String host = "smtp.mailtrap.io";
         int port = 25;
 
         try {
-            Client client = new Client(host, port);
+            Credential credential = new Credential("e8eaf81d87daad", "0ecad410504d1d");
+            Client client = new Client(host, port, credential);
 
             MailHeader mh = new MailHeader();
             mh.setSender("sender@prank.org");

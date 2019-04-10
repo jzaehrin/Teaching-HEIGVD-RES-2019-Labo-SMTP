@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Client {
@@ -14,6 +13,8 @@ public class Client {
 
     private String host;
     private Integer port;
+    private Credential credential = null;
+
     private Socket client = null;
     private PrintWriter output = null;
     private Scanner input = null;
@@ -21,6 +22,12 @@ public class Client {
     public Client(String host, Integer port) {
         this.host = host;
         this.port = port;
+    }
+
+    public Client(String host, Integer port, Credential credential) {
+        this(host, port);
+
+        this.credential = credential;
     }
 
     public void connect(String as) throws IOException {
@@ -32,6 +39,20 @@ public class Client {
         readResponse("220");
 
         send(SMTPMessages.hello(as));
+
+        readResponse("250");
+
+        if(credential == null)
+            return;
+
+        send(SMTPMessages.login());
+        readResponse("334");
+
+        send(SMTPMessages.username(credential.getUsername()));
+        readResponse("334");
+
+        send(SMTPMessages.password(credential.getPassword()));
+        readResponse("235");
     }
 
     public void disconnect() throws IOException {
@@ -60,8 +81,6 @@ public class Client {
         MailData data = new MailData(header, content);
 
         LOG.info("Communication sequence :");
-        readResponse("250");
-
         send(SMTPMessages.headerFrom(header.getSender()));
 
         readResponse("250");
