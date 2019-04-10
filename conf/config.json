@@ -1,9 +1,5 @@
 {
   "hostname": "localhost",
   "port": 1025,
-  "domain": null,
-  "credentials": {
-    "username": null,
-    "password": null
-  }
+  "domain": "local"
 }

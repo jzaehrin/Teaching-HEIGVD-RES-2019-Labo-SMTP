@@ -18,11 +18,11 @@
   "mails": [
     {
       "subject": "sujet en français",
-      "content": "Test de contenu avec\nDes\nRetour à la ligne !"
+      "message": "Test de contenu avec\nDes\nRetour à la ligne !"
     },
     {
       "subject": "Subject in english",
-      "content": "Test without newlines..."
+      "message": "Test without newlines..."
     }
   ]
 }

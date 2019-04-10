@@ -1,14 +1,11 @@
 package ch.heigvd.smtp.client;
 
-import com.sun.xml.internal.xsom.impl.scd.Iterators;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
-import java.util.function.Function;
 import java.util.logging.Logger;
 
 public class Client {
@@ -84,21 +81,20 @@ public class Client {
         client.close();
     }
 
-    public void sendEmail(MailHeader header, MailContent content) {
+    public void sendEmail(Mail mail) {
         if(client == null) {
             LOG.severe("Need to be connect to send an email !!");
             throw new RuntimeException("Need to be connect to send an email !!");
         }
 
         LOG.info("Sending email...");
-        MailData data = new MailData(header, content);
 
         LOG.info("Communication sequence :");
-        send(SMTPMessages.headerFrom(header.getSender()));
+        send(SMTPMessages.headerFrom(mail.getSender()));
 
         readResponse("250");
 
-        for(String receiver : header.getReceivers()) {
+        for(String receiver : mail.getReceivers()) {
             send(SMTPMessages.headerTo(receiver));
 
             readResponse("250");
@@ -108,7 +104,7 @@ public class Client {
 
         readResponse("354");
 
-        send(data.dump());
+        send(mail.dumpData());
 
         send(SMTPMessages.endData());
 

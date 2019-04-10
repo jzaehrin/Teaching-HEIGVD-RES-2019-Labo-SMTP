@@ -25,4 +25,18 @@ public class MailHeader {
     public void addReceiver(String receivers) {
         this.receivers.add(receivers);
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("Sender   :\n\t")
+                .append(sender)
+                .append("\nReceivers:");
+
+        for (String receiver : receivers)
+            sb.append("\n\t").append(receiver);
+
+        return sb.toString();
+    }
 }
