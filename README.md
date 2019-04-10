@@ -11,19 +11,46 @@ La gestion d'authentification est intéractive et demandé si le serveur gère l
 
 ## Usage
 
-Les deux configurations suivantes permet de définir le comportement et le serveur cible d'envoi.
+Les deux configurations suivantes permet de définir le comportement et le serveur cible d'envoi. Ils sont au format JSON.
 
 **config.json** permet de spécifié le serveur cible et le domain d'annonce vers le serveur.
 Voici un exemple simple permettant de voir la structure nécessaire.
-```json
 
+```json
+{
+  "hostname": "localhost",
+  "port": 1025,
+  "domain": "local"
+}
 ```
+
+Le champs domain peut être null ce qui donnera le hostname de la machine hôte comme domaine.
 
 **prank.json** permet de définir une liste de groupe d'avoir avec un envoyeur et au moins deux victimes ainsi qu'une liste de mail qui seront proposé lors de l'execution.
 Voici un exemple simple permettant de voir la structure nécessaire pour les informations.
 ```json
-
+{
+  "groups": [
+    {
+      "sender": "sender1@mail.org",
+      "receivers": [
+        "receiver1@mail.org",
+        "receiver2@mail.org"
+      ]
+    }
+  ],
+  "mails": [
+    {
+      "subject": "sujet en français",
+      "message": "Test de contenu avec\nDes\nRetour à la ligne !"
+    }
+  ]
+}
 ```
+
+La configuration ci-dessus permet de définir un tableau `groups` d'objet définissant l'envoyeur et le tableau des receveurs qui doivent être au nombre de deux minimum.
+La tableau `mails` défini un ensemble d'objet contenant un sujet et un message qui seront proposés à l'utilisateur lors de l'execution pour les mettre en relation avec un groupe.
+
 
 ## Implementation
 
