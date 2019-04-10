@@ -21,7 +21,7 @@ public class Client {
         this.port = port;
 
         client = new Socket(host, port);
-        output = new PrintWriter(new BufferedOutputStream(client.getOutputStream()), true);
+        output = new PrintWriter(new BufferedOutputStream(client.getOutputStream()));
         input  = new Scanner(new BufferedInputStream(client.getInputStream()));
     }
 
@@ -30,52 +30,48 @@ public class Client {
             String response = input.nextLine();
             System.out.println(response);
 
-            if(response.contains("[0-9]{3} "))
+            if(response.matches("^\\d{3} .*$"))
                 break;
         }
-        
+
         output.print(SMTPMessages.hello("local"));
+        output.flush();
 
         while(true) {
             String response = input.nextLine();
             System.out.println(response);
 
-            if(response.contains("[0-9]{3} "))
+            if(response.matches("^\\d{3} .*$"))
                 break;
         }
 
         output.print(SMTPMessages.headerFrom(header.getSender()));
+        output.flush();
 
         while(!input.hasNextLine());
 
-        while (input.hasNextLine())
-            System.out.println(input.nextLine());
+        System.out.println(input.nextLine());
 
         for(String receiver : header.getReceivers()) {
             output.print(SMTPMessages.headerTo(receiver));
+            output.flush();
 
             while(!input.hasNextLine());
 
-            while (input.hasNextLine())
-                System.out.println(input.nextLine());
+            System.out.println(input.nextLine());
         }
 
         output.print(SMTPMessages.startData());
+        output.flush();
 
         while(!input.hasNextLine());
 
-        while (input.hasNextLine())
-            System.out.println(input.nextLine());
+        System.out.println(input.nextLine());
 
         output.print(SMTPMessages.dataFrom(header.getSender()));
 
         for(String receiver : header.getReceivers()) {
             output.print(SMTPMessages.dataTo(receiver));
-
-            while(!input.hasNextLine());
-
-            while (input.hasNextLine())
-                System.out.println(input.nextLine());
         }
 
         output.print(SMTPMessages.dataSubject(content.getSubject()));
@@ -83,12 +79,9 @@ public class Client {
         output.println(content.getMessage());
 
         output.print(SMTPMessages.endData());
-
-        while(!input.hasNextLine());
-
-        while (input.hasNextLine())
-            System.out.println(input.nextLine());
+        output.flush();
 
         output.print(SMTPMessages.quit());
+        output.flush();
     }
 }

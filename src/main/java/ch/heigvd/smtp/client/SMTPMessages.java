@@ -32,7 +32,7 @@ public class SMTPMessages {
     }
 
     public static String endData() {
-        return "." + endline;
+        return endline + "." + endline;
     }
 
     public static String quit() {
