@@ -16,10 +16,8 @@ public class IOUser {
 
             if (result.contains("y") || result.contains("Y"))
                 return true;
-            else (result.contains("n") || result.contains("N") )
+            else if(result.contains("n") || result.contains("N"))
                 return false;
-
-            scanner.remove();
         }
     }
 
@@ -28,8 +26,6 @@ public class IOUser {
         String username = scanner.nextLine();
         System.out.print("Password : ");
         String password = scanner.nextLine();
-
-        scanner.remove();
 
         return  new Credential(username, password);
     }
