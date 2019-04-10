@@ -17,7 +17,7 @@ public class MailData {
             sb.append(SMTPMessages.dataTo(receiver));
 
         sb.append(SMTPMessages.dataSubject(mailContent.getSubject()));
-        sb.append(mailContent.getMessage());
+        sb.append(SMTPMessages.message(mailContent.getMessage()));
 
         return sb.toString();
     }

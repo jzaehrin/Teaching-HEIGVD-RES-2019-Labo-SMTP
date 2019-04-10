@@ -10,15 +10,33 @@ public class SMTPMessages {
         return sb.toString();
     }
 
+    public static String login() {
+        sb.setLength(0);
+        sb.append("AUTH LOGIN").append(endline);
+        return sb.toString();
+    }
+
+    public static String username(String username) {
+        sb.setLength(0);
+        sb.append(username).append(endline);
+        return sb.toString();
+    }
+
+    public static String password(String password) {
+        sb.setLength(0);
+        sb.append(password).append(endline);
+        return sb.toString();
+    }
+
     public static String headerFrom(String sender) {
         sb.setLength(0);
-        sb.append("MAIL FROM: ").append(sender).append(endline);
+        sb.append("MAIL FROM: <").append(sender).append(">").append(endline);
         return sb.toString();
     }
 
     public static String headerTo(String receiver) {
         sb.setLength(0);
-        sb.append("RCPT TO: ").append(receiver).append(endline);
+        sb.append("RCPT TO: <").append(receiver).append(">").append(endline);
         return sb.toString();
     }
 
@@ -42,13 +60,19 @@ public class SMTPMessages {
 
     public static String dataSubject(String subject) {
         sb.setLength(0);
-        sb.append("Subject: ").append(subject).append(endline);
+        sb.append("Subject: ").append(subject).append(endline).append(endline);
+        return sb.toString();
+    }
+
+    public static String message(String message) {
+        sb.setLength(0);
+        sb.append(message).append(endline);
         return sb.toString();
     }
 
     public static String endData() {
         sb.setLength(0);
-        sb.append(endline).append(".").append(endline);
+        sb.append(".").append(endline);
         return sb.toString();
     }
 
