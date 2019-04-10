@@ -19,7 +19,9 @@ public class Main {
             mc.setSubject("Subject test");
             mc.setMessage("Message test");
 
+            client.connect("local");
             client.sendEmail(mh, mc);
+            client.disconnect();
         } catch (IOException e) {
             e.printStackTrace();
         }

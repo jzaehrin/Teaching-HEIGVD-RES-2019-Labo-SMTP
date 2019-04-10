@@ -6,82 +6,106 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
-
-import ch.heigvd.smtp.client.SMTPMessages;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Client {
+    static final Logger LOG = Logger.getLogger(Client.class.getName());
+
     private String host;
     private Integer port;
-    private Socket client;
-    private PrintWriter output;
-    private Scanner input;
+    private Socket client = null;
+    private PrintWriter output = null;
+    private Scanner input = null;
 
-    public Client(String host, Integer port) throws IOException {
+    public Client(String host, Integer port) {
         this.host = host;
         this.port = port;
+    }
 
+    public void connect(String as) throws IOException {
         client = new Socket(host, port);
         output = new PrintWriter(new BufferedOutputStream(client.getOutputStream()));
         input  = new Scanner(new BufferedInputStream(client.getInputStream()));
+
+        LOG.info("Connecting...");
+        readResponse("220");
+
+        send(SMTPMessages.hello(as));
+    }
+
+    public void disconnect() throws IOException {
+        if(client == null) {
+            LOG.severe("Need to be connect to disconnect !!");
+            throw new RuntimeException("Need to be connect to disconnect !!");
+        }
+
+        LOG.info("Disconnecting...");
+        send(SMTPMessages.quit());
+
+        readResponse("221");
+
+        output.close();
+        input.close();
+        client.close();
     }
 
     public void sendEmail(MailHeader header, MailContent content) {
+        if(client == null) {
+            LOG.severe("Need to be connect to send an email !!");
+            throw new RuntimeException("Need to be connect to send an email !!");
+        }
+
+        LOG.info("Sending email...");
+        MailData data = new MailData(header, content);
+
+        LOG.info("Communication sequence :");
+        readResponse("250");
+
+        send(SMTPMessages.headerFrom(header.getSender()));
+
+        readResponse("250");
+
+        for(String receiver : header.getReceivers()) {
+            send(SMTPMessages.headerTo(receiver));
+
+            readResponse("250");
+        }
+
+        send(SMTPMessages.startData());
+
+        readResponse("354");
+
+        send(data.dump());
+
+        send(SMTPMessages.endData());
+
+        readResponse("250");
+    }
+
+    private void send(String command) {
+        System.out.print(command);
+
+        output.print(command);
+        output.flush();
+    }
+
+    private void readResponse(String codeAttempt) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("^").append(codeAttempt).append(".*$");
+        String regexCodeAttempt = sb.toString();
+
         while(true) {
             String response = input.nextLine();
             System.out.println(response);
 
-            if(response.matches("^\\d{3} .*$"))
-                break;
-        }
-
-        output.print(SMTPMessages.hello("local"));
-        output.flush();
-
-        while(true) {
-            String response = input.nextLine();
-            System.out.println(response);
+            if(!response.matches(regexCodeAttempt)) {
+                LOG.severe("Error attempt");
+                throw new RuntimeException("Error attempt");
+            }
 
             if(response.matches("^\\d{3} .*$"))
                 break;
         }
-
-        output.print(SMTPMessages.headerFrom(header.getSender()));
-        output.flush();
-
-        while(!input.hasNextLine());
-
-        System.out.println(input.nextLine());
-
-        for(String receiver : header.getReceivers()) {
-            output.print(SMTPMessages.headerTo(receiver));
-            output.flush();
-
-            while(!input.hasNextLine());
-
-            System.out.println(input.nextLine());
-        }
-
-        output.print(SMTPMessages.startData());
-        output.flush();
-
-        while(!input.hasNextLine());
-
-        System.out.println(input.nextLine());
-
-        output.print(SMTPMessages.dataFrom(header.getSender()));
-
-        for(String receiver : header.getReceivers()) {
-            output.print(SMTPMessages.dataTo(receiver));
-        }
-
-        output.print(SMTPMessages.dataSubject(content.getSubject()));
-
-        output.println(content.getMessage());
-
-        output.print(SMTPMessages.endData());
-        output.flush();
-
-        output.print(SMTPMessages.quit());
-        output.flush();
     }
 }

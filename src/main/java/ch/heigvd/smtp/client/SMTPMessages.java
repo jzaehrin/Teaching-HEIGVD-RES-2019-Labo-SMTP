@@ -2,40 +2,59 @@ package ch.heigvd.smtp.client;
 
 public class SMTPMessages {
     private static String endline = "\r\n";
+    private static StringBuilder sb= new StringBuilder();
 
     public static String hello(String server) {
-        return "EHLO " + server + endline;
+        sb.setLength(0);
+        sb.append("EHLO ").append(server).append(endline);
+        return sb.toString();
     }
 
     public static String headerFrom(String sender) {
-        return "MAIL FROM: " + sender + endline;
+        sb.setLength(0);
+        sb.append("MAIL FROM: ").append(sender).append(endline);
+        return sb.toString();
     }
 
     public static String headerTo(String receiver) {
-        return "RCPT TO: " + receiver + endline;
+        sb.setLength(0);
+        sb.append("RCPT TO: ").append(receiver).append(endline);
+        return sb.toString();
     }
 
     public static String startData() {
-        return "Data" + endline;
+        sb.setLength(0);
+        sb.append("Data").append(endline);
+        return sb.toString();
     }
 
     public static String dataFrom(String sender) {
-        return "From: " + sender + endline;
+        sb.setLength(0);
+        sb.append("From: ").append(sender).append(endline);
+        return sb.toString();
     }
 
     public static String dataTo(String receiver) {
-        return "To: " + receiver + endline;
+        sb.setLength(0);
+        sb.append("To: ").append(receiver).append(endline);
+        return sb.toString();
     }
 
     public static String dataSubject(String subject) {
-        return "Subject: " + subject + endline;
+        sb.setLength(0);
+        sb.append("Subject: ").append(subject).append(endline);
+        return sb.toString();
     }
 
     public static String endData() {
-        return endline + "." + endline;
+        sb.setLength(0);
+        sb.append(endline).append(".").append(endline);
+        return sb.toString();
     }
 
     public static String quit() {
-        return "quit" + endline;
+        sb.setLength(0);
+        sb.append("quit").append(endline);
+        return sb.toString();
     }
 }
