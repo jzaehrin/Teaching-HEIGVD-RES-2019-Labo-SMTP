@@ -1,11 +1,14 @@
 package ch.heigvd.smtp.client;
 
+import com.sun.xml.internal.xsom.impl.scd.Iterators;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
+import java.util.function.Function;
 import java.util.logging.Logger;
 
 public class Client {
@@ -24,12 +27,6 @@ public class Client {
         this.port = port;
     }
 
-    public Client(String host, Integer port, Credential credential) {
-        this(host, port);
-
-        this.credential = credential;
-    }
-
     public void connect(String as) throws IOException {
         client = new Socket(host, port);
         output = new PrintWriter(new BufferedOutputStream(client.getOutputStream()));
@@ -40,10 +37,25 @@ public class Client {
 
         send(SMTPMessages.hello(as));
 
-        readResponse("250");
+        boolean canAuth = readResponse("250", new ReponseStateHandler() {
+            private boolean state = false;
 
-        if(credential == null)
+            @Override
+            public void onResponse(String response) {
+                if(response.contains("AUTH") && response.contains("LOGIN"))
+                    state = true;
+            }
+
+            @Override
+            public boolean getState() {
+                return state;
+            }
+        });
+
+        if(!canAuth)
             return;
+
+
 
         send(SMTPMessages.login());
         readResponse("334");
@@ -126,5 +138,33 @@ public class Client {
             if(response.matches("^\\d{3} .*$"))
                 break;
         }
+    }
+
+    private boolean readResponse(String codeAttempt, ReponseStateHandler handler) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("^").append(codeAttempt).append(".*$");
+        String regexCodeAttempt = sb.toString();
+
+        while(true) {
+            String response = input.nextLine();
+            System.out.println(response);
+
+            handler.onResponse(response);
+
+            if(!response.matches(regexCodeAttempt)) {
+                LOG.severe("Error attempt");
+                throw new RuntimeException("Error attempt");
+            }
+
+            if(response.matches("^\\d{3} .*$"))
+                break;
+        }
+
+        return handler.getState();
+    }
+
+    public interface ReponseStateHandler {
+        public void onResponse(String response);
+        public boolean getState();
     }
 }
