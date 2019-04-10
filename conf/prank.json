@@ -1,0 +1,28 @@
+{
+  "groups": [
+    {
+      "sender": "sender1@mail.org",
+      "receivers": [
+        "receiver1@mail.org",
+        "receiver2@mail.org"
+      ]
+    },
+    {
+      "sender": "sender2@mail.org",
+      "receivers": [
+        "receiver3@mail.org",
+        "receiver4@mail.org"
+      ]
+    }
+  ],
+  "mails": [
+    {
+      "subject": "sujet en français",
+      "content": "Test de contenu avec\nDes\nRetour à la ligne !"
+    },
+    {
+      "subject": "Subject in english",
+      "content": "Test without newlines..."
+    }
+  ]
+}
