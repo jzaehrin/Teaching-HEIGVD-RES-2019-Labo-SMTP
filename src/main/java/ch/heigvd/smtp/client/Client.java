@@ -16,8 +16,8 @@ public class Client {
 
     private String host;
     private Integer port;
-    private Credential credential = null;
 
+    private IOUser ioUser;
     private Socket client = null;
     private PrintWriter output = null;
     private Scanner input = null;
@@ -25,6 +25,7 @@ public class Client {
     public Client(String host, Integer port) {
         this.host = host;
         this.port = port;
+        this.ioUser = new IOUser();
     }
 
     public void connect(String as) throws IOException {
@@ -52,10 +53,10 @@ public class Client {
             }
         });
 
-        if(!canAuth)
+        if(!canAuth || !ioUser.wantCredential())
             return;
 
-
+        Credential credential = ioUser.getCredential();
 
         send(SMTPMessages.login());
         readResponse("334");
