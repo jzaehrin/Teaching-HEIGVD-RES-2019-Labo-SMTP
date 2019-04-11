@@ -15,7 +15,7 @@
   "mails": [
     {
       "subject": "sujet en français",
-      "message": "Test de contenu avec\nDes\nRetour à la ligne !"
+      "message": "Test de contenu en français avec\nDes\nRetour à la ligne !"
     },
     {
       "subject": "Subject in english",

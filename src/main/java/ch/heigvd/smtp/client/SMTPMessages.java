@@ -1,5 +1,7 @@
 package ch.heigvd.smtp.client;
 
+import java.util.Base64;
+
 public class SMTPMessages {
     private static String endline = "\r\n";
 
@@ -44,7 +46,7 @@ public class SMTPMessages {
     }
 
     public static String dataSubject(String subject) {
-        return String.format("Subject: %s%s%s", subject, endline, endline);
+        return String.format("Subject: =?utf-8?B?%s?=%s%s", Base64.getEncoder().encodeToString(subject.getBytes()), endline, endline);
     }
 
     public static String message(String message) {
