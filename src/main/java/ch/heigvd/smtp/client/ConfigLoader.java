@@ -1,7 +1,6 @@
 package ch.heigvd.smtp.client;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.*;
@@ -19,7 +18,7 @@ public class ConfigLoader {
         File configFile = new File(configPath);
         File prankFile = new File(prankPath);
 
-        FileInputStream configReader = null;
+        FileInputStream configReader;
         try {
             configReader = new FileInputStream(configFile);
 

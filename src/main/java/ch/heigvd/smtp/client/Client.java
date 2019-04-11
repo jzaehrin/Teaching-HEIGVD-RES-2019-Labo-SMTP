@@ -161,7 +161,7 @@ public class Client {
     }
 
     public interface ReponseStateHandler {
-        public void onResponse(String response);
-        public boolean getState();
+        void onResponse(String response);
+        boolean getState();
     }
 }
