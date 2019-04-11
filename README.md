@@ -20,12 +20,16 @@ Voici un exemple simple permettant de voir la structure nécessaire.
 {
   "hostname": "localhost",
   "port": 1025,
-  "domain": "local"
+  "domain": "local",
+  "log_level": "INFO"
 }
 ```
 
-Le chamddps `domain` peut être une chaîne vide (`""`), dans le sens où ce domaine n'a pas réellement d'impacte pour une simulation.
+Le champs `domain` peut être une chaîne vide (`""`), dans le sens où ce domaine n'a pas réellement d'impacte pour une simulation.
 Autrement, il devra évidemment renseigner une annonce valide pour le serveur choisi.
+
+le champ `log_level` permet d'afficher plus informations, les valeurs de ce champs doivent être les différents types de Level java.
+Nous vous conseillions les niveaux `INFO`, `ALL` ou `SEVERE`.
 
 **prank.json** permet de définir une liste de groupes (possédant un envoyeur et au moins deux victimes), 
 ainsi qu'une liste de mails qui seront proposés à de l'exécution du programme.
@@ -70,7 +74,8 @@ Credential stock les crédentials de l'utilisateur en base64.
 
 Le ConfigLoader s'occupe de récupérer et mettre à disposition l'ensemble des informations présentent dans la configuartion.
 
-Pour l'authentification, nous demande si l'authentification est voulu uniquement dans le cas où l'option
+Pour l'authentification, nous demande si l'authentification est voulu uniquement dans le cas où l'option est présent.
+Lors de la lecture des reponses du serveur, il est possible donner un visiteur qui recevera l'ensemble des messages.
 
 
 
