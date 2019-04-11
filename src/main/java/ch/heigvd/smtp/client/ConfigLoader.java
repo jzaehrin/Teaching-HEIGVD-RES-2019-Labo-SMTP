@@ -6,6 +6,7 @@ import org.json.JSONObject;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class ConfigLoader {
     final private String configPath = "./conf/config.json";
@@ -41,16 +42,25 @@ public class ConfigLoader {
     }
 
     public ArrayList<MailHeader> getMailHeaders() {
+        Random random = new Random();
         ArrayList<MailHeader> res = new ArrayList<>();
-        JSONArray groups = prank.getJSONArray("groups");
+        // mailing list
+        JSONArray mailing = prank.getJSONArray("mailing");
+        // number of groups to create
+        int nbGroups = prank.getInt("nb_groups");
 
-        for (int i = 0; i < groups.length(); ++i) {
+        // generate groups
+        for (int i = 0; i < nbGroups; ++i) {
+            // random size of group
+            int size = random.nextInt(mailing.length() - 3) + 3;
+            // random list of indexes for the mailing array
+            final int[] indexes = random.ints(0, mailing.length()).distinct().limit(size).toArray();
+
+            // generate group
             MailHeader mh = new MailHeader();
-            mh.setSender(groups.getJSONObject(i).getString("sender"));
-
-            JSONArray receivers = groups.getJSONObject(i).getJSONArray("receivers");
-            for (int j = 0; j < receivers.length(); ++j) {
-                mh.addReceiver(receivers.getString(j));
+            mh.setSender(mailing.getString(indexes[0]));
+            for (int j = 1; j < size; ++j) {
+                mh.addReceiver(mailing.getString(indexes[j]));
             }
 
             res.add(mh);

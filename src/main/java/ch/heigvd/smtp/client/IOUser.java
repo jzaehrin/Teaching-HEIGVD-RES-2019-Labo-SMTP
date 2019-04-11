@@ -52,7 +52,7 @@ public class IOUser {
     }
 
     public boolean getYesNo(String msg, boolean defaulYes) {
-        String def = defaulYes ? new String(" [Y/n] ") : new String(" [y/N] ");
+        String def = defaulYes ? new String("[Y/n] ") : new String("[N/y] ");
         msg += def;
 
         while (true) {

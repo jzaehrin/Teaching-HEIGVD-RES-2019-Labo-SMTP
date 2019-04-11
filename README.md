@@ -2,18 +2,18 @@
 
 ## Description
 
-Ce projet permet d'effectué des envois de mail forgé à des adresses arbitraires.
-Il est facilement configurable par un fichier de configuration.
-Il vous proposera de choisir le message a envoyé à un groupe donner de manière intéractive.
-La gestion d'authentification est intéractive et demandé si le serveur gère la fonctionalité de login.
+Ce projet permet d'effectué des envois de mails forgés à des adresses arbitraires.
+Il est facilement configurable à l'aide de ses fichiers de configuration.
+Il vous proposera de choisir le message a envoyé à chaque groupe donné de manière intéractive.
+La gestion d'authentification est intéractive et demandé automatiquement si le serveur gère la fonctionalité de login.
 
 ## Utilisation avec MockMock: Mock SMTP serveur
 
 ## Usage
 
-Les deux configurations suivantes permet de définir le comportement et le serveur cible d'envoi. Ils sont au format JSON.
+Les deux configurations suivantes permettent de définir le comportement et le serveur cible d'envoi. Ils sont au format JSON.
 
-**config.json** permet de spécifié le serveur cible et le domain d'annonce vers le serveur.
+**config.json** permet de spécifié le serveur cible (*hostname* + *port*) et le domaine d'annonce vers le serveur.
 Voici un exemple simple permettant de voir la structure nécessaire.
 
 ```json
@@ -24,10 +24,12 @@ Voici un exemple simple permettant de voir la structure nécessaire.
 }
 ```
 
-Le champs domain peut être null ce qui donnera le hostname de la machine hôte comme domaine.
+Le chamddps `domain` peut être une chaîne vide (`""`), dans le sens où ce domaine n'a pas réellement d'impacte pour une simulation.
+Autrement, il devra évidemment renseigner une annonce valide pour le serveur choisi.
 
-**prank.json** permet de définir une liste de groupe d'avoir avec un envoyeur et au moins deux victimes ainsi qu'une liste de mail qui seront proposé lors de l'execution.
-Voici un exemple simple permettant de voir la structure nécessaire pour les informations.
+**prank.json** permet de définir une liste de groupes (possédant un envoyeur et au moins deux victimes), 
+ainsi qu'une liste de mails qui seront proposés à de l'exécution du programme.
+Voici un exemple simple permettant de voir la structure des différentes informations.
 ```json
 {
   "groups": [
@@ -48,8 +50,9 @@ Voici un exemple simple permettant de voir la structure nécessaire pour les inf
 }
 ```
 
-La configuration ci-dessus permet de définir un tableau `groups` d'objet définissant l'envoyeur et le tableau des receveurs qui doivent être au nombre de deux minimum.
-La tableau `mails` défini un ensemble d'objet contenant un sujet et un message qui seront proposés à l'utilisateur lors de l'execution pour les mettre en relation avec un groupe.
+La configuration ci-dessus permet de définir un tableau `groups` d'objet `json` définissant chacun l'envoyeur et le tableau des receveurs, 
+qui doivent être au nombre de deux au minimum.
+La tableau `mails` défini un ensemble d'objets contenant chacun un sujet et un message qui seront proposés à l'utilisateur lors de l'execution.
 
 
 ## Implementation

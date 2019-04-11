@@ -1,20 +1,17 @@
 {
-  "groups": [
-    {
-      "sender": "sender1@mail.org",
-      "receivers": [
-        "receiver1@mail.org",
-        "receiver2@mail.org"
-      ]
-    },
-    {
-      "sender": "sender2@mail.org",
-      "receivers": [
-        "receiver3@mail.org",
-        "receiver4@mail.org"
-      ]
-    }
+  "mailing": [
+    "victim1@mail.org",
+    "victim2@mail.org",
+    "victim3@mail.org",
+    "victim4@mail.org",
+    "victim5@mail.org",
+    "victim6@mail.org",
+    "victim7@mail.org",
+    "victim8@mail.org",
+    "victim9@mail.org",
+    "victim10@mail.org"
   ],
+  "nb_groups": 3,
   "mails": [
     {
       "subject": "sujet en français",
