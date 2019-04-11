@@ -2,83 +2,60 @@ package ch.heigvd.smtp.client;
 
 public class SMTPMessages {
     private static String endline = "\r\n";
-    private static StringBuilder sb= new StringBuilder();
 
     public static String hello(String server) {
-        sb.setLength(0);
-        sb.append("EHLO ").append(server).append(endline);
-        return sb.toString();
+        return String.format("EHLO %s%s", server, endline);
     }
 
     public static String login() {
-        sb.setLength(0);
-        sb.append("AUTH LOGIN").append(endline);
-        return sb.toString();
+        return String.format("AUTH LOGIN%s", endline);
     }
 
     public static String username(String username) {
-        sb.setLength(0);
-        sb.append(username).append(endline);
-        return sb.toString();
+        return String.format("%s%s", username, endline);
     }
 
     public static String password(String password) {
-        sb.setLength(0);
-        sb.append(password).append(endline);
-        return sb.toString();
+        return String.format("%s%s", password, endline);
     }
 
     public static String headerFrom(String sender) {
-        sb.setLength(0);
-        sb.append("MAIL FROM: <").append(sender).append(">").append(endline);
-        return sb.toString();
+        return String.format("MAIL FROM: <%s>%s", sender, endline);
     }
 
     public static String headerTo(String receiver) {
-        sb.setLength(0);
-        sb.append("RCPT TO: <").append(receiver).append(">").append(endline);
-        return sb.toString();
+        return String.format("RCPT TO: <%s>%s", receiver, endline);
+    }
+
+    public static String setEncoding() {
+        return String.format("Content-Type: text/plain; charset=utf-8%s", endline);
     }
 
     public static String startData() {
-        sb.setLength(0);
-        sb.append("Data").append(endline);
-        return sb.toString();
+        return String.format("Data%s", endline);
     }
 
-    public static String dataFrom(String sender) {
-        sb.setLength(0);
-        sb.append("From: ").append(sender).append(endline);
-        return sb.toString();
+    public static String dataFrom(String sender) {;
+        return String.format("From: %s%s", sender, endline);
     }
 
     public static String dataTo(String receiver) {
-        sb.setLength(0);
-        sb.append("To: ").append(receiver).append(endline);
-        return sb.toString();
+        return String.format("To: %s%s", receiver, endline);
     }
 
     public static String dataSubject(String subject) {
-        sb.setLength(0);
-        sb.append("Subject: ").append(subject).append(endline).append(endline);
-        return sb.toString();
+        return String.format("Subject: %s%s%s", subject, endline, endline);
     }
 
     public static String message(String message) {
-        sb.setLength(0);
-        sb.append(message).append(endline);
-        return sb.toString();
+        return String.format("%s%s", message, endline);
     }
 
     public static String endData() {
-        sb.setLength(0);
-        sb.append(".").append(endline);
-        return sb.toString();
+        return String.format(".%s", endline);
     }
 
     public static String quit() {
-        sb.setLength(0);
-        sb.append("quit").append(endline);
-        return sb.toString();
+        return String.format("quit%s", endline);
     }
 }

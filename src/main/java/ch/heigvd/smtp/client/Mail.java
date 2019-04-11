@@ -34,6 +34,8 @@ public class Mail {
         for (String receiver : mailHeader.getReceivers())
             sb.append(SMTPMessages.dataTo(receiver));
 
+        sb.append(SMTPMessages.setEncoding());
+
         sb.append(SMTPMessages.dataSubject(mailContent.getSubject()));
         sb.append(SMTPMessages.message(mailContent.getMessage()));
 

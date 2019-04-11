@@ -1,9 +1,6 @@
 package ch.heigvd.smtp.client;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 import java.util.Scanner;
 import java.util.logging.Logger;
@@ -27,7 +24,7 @@ public class Client {
 
     public void connect(String as) throws IOException {
         client = new Socket(host, port);
-        output = new PrintWriter(new BufferedOutputStream(client.getOutputStream()));
+        output = new PrintWriter((new BufferedOutputStream(client.getOutputStream())));
         input  = new Scanner(new BufferedInputStream(client.getInputStream()));
 
         LOG.info("Connecting...");
@@ -99,6 +96,7 @@ public class Client {
 
             readResponse("250");
         }
+
 
         send(SMTPMessages.startData());
 
