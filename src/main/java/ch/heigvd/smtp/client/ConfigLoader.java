@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.logging.Level;
 
 public class ConfigLoader {
     final private String configPath = "./conf/config.json";
@@ -93,6 +94,10 @@ public class ConfigLoader {
 
     public String getDomain() {
         return config.getString("domain");
+    }
+
+    public Level getLogLevel() {
+        return Level.parse(config.getString("log_level"));
     }
 
     public Credential getCredentials() {

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class Main {
     public static void main(String[] args) {
         ConfigLoader configLoader = new ConfigLoader();
-        Client client = new Client(configLoader.getHostname(), configLoader.getPort());
+        Client client = new Client(configLoader.getHostname(), configLoader.getPort(), configLoader.getLogLevel());
         IOUser ioUser = new IOUser();
         ArrayList<Mail> mails = new ArrayList<>();
         ArrayList<MailContent> mailContents = configLoader.getMailContents();

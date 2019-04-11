@@ -91,7 +91,7 @@ public class Client {
 
         LOG.info("Sending email...");
 
-        LOG.info("Communication sequence :");
+        LOG.log(Level.ALL, "Communication sequence :");
         send(SMTPMessages.headerFrom(mail.getSender()));
 
         readResponse("250");
