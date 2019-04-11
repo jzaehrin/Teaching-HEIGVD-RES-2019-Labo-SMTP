@@ -3,6 +3,7 @@ package ch.heigvd.smtp.client;
 import java.io.*;
 import java.net.Socket;
 import java.util.Scanner;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Client {
@@ -16,10 +17,12 @@ public class Client {
     private PrintWriter output = null;
     private Scanner input = null;
 
-    public Client(String host, Integer port) {
+    public Client(String host, Integer port, Level logLevel) {
         this.host = host;
         this.port = port;
         this.ioUser = new IOUser();
+
+        LOG.setLevel(logLevel);
     }
 
     public void connect(String as) throws IOException {
@@ -32,7 +35,7 @@ public class Client {
 
         send(SMTPMessages.hello(as));
 
-        boolean canAuth = readResponse("250", new ReponseStateHandler() {
+        ReponseVisitor visitor = new ReponseVisitor() {
             private boolean state = false;
 
             @Override
@@ -45,9 +48,11 @@ public class Client {
             public boolean getState() {
                 return state;
             }
-        });
+        };
 
-        if(!canAuth || !ioUser.wantCredential())
+        readResponse("250", visitor);
+
+        if(!visitor.getState() || !ioUser.wantCredential())
             return;
 
         Credential credential = ioUser.getCredential();
@@ -110,20 +115,30 @@ public class Client {
     }
 
     private void send(String command) {
-        System.out.print(command);
+        if(LOG.getLevel() == Level.ALL)
+            System.out.print(command);
 
         output.print(command);
         output.flush();
     }
 
     private void readResponse(String codeAttempt) {
+        readResponse(codeAttempt, null);
+    }
+
+    private void readResponse(String codeAttempt, ReponseVisitor visitor) {
         StringBuilder sb = new StringBuilder();
         sb.append("^").append(codeAttempt).append(".*$");
         String regexCodeAttempt = sb.toString();
 
         while(true) {
             String response = input.nextLine();
-            System.out.println(response);
+
+            if(LOG.getLevel() == Level.ALL)
+                System.out.println(response);
+
+            if(visitor != null)
+                visitor.onResponse(response);
 
             if(!response.matches(regexCodeAttempt)) {
                 LOG.severe("Error attempt");
@@ -135,30 +150,7 @@ public class Client {
         }
     }
 
-    private boolean readResponse(String codeAttempt, ReponseStateHandler handler) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("^").append(codeAttempt).append(".*$");
-        String regexCodeAttempt = sb.toString();
-
-        while(true) {
-            String response = input.nextLine();
-            System.out.println(response);
-
-            handler.onResponse(response);
-
-            if(!response.matches(regexCodeAttempt)) {
-                LOG.severe("Error attempt");
-                throw new RuntimeException("Error attempt");
-            }
-
-            if(response.matches("^\\d{3} .*$"))
-                break;
-        }
-
-        return handler.getState();
-    }
-
-    public interface ReponseStateHandler {
+    public interface ReponseVisitor {
         void onResponse(String response);
         boolean getState();
     }

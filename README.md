@@ -70,5 +70,7 @@ Credential stock les crédentials de l'utilisateur en base64.
 
 Le ConfigLoader s'occupe de récupérer et mettre à disposition l'ensemble des informations présentent dans la configuartion.
 
+Pour l'authentification, nous demande si l'authentification est voulu uniquement dans le cas où l'option
+
 
 
