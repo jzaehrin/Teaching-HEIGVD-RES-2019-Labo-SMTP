@@ -4,7 +4,7 @@
 
 Ce projet permet d'effectué des envois de mails forgés à des adresses arbitraires.
 Il est facilement configurable à l'aide de ses fichiers de configuration.
-Il vous proposera de choisir le message a envoyé à chaque groupe donné de manière intéractive.
+Il vous proposera de choisir le message a envoyé à chaque groupe générer de manière aléatoire donné de manière intéractive.
 La gestion d'authentification est intéractive et demandé automatiquement si le serveur gère la fonctionalité de login.
 
 ## Utilisation avec MockMock: Mock SMTP serveur
@@ -56,6 +56,8 @@ La tableau `mails` défini un ensemble d'objets contenant chacun un sujet et un 
 
 
 ## Implementation
+
+![uml](./imgs/uml.png)
 
 La class Client est la classe principal s'occupant de guérer la connection avec le serveur et d'envoyer les emails à l'aide de la class SMTPMessages qui fourni un ensemble de fonction permettant de générer les messages smtp.
 
