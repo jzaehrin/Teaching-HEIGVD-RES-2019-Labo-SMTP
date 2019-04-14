@@ -34,7 +34,7 @@ Finalement, de la même manière, un fichier `stop.sh` permet d'arrêter le cont
 automatiquement à la fin de son exécution. Par soucis d'analogie, un script `stop.sh` global permettra également
 de stopper toute la séquence.
 
-## Utilisation en Java
+## Utilisation avec Java
 
 Afin de permettre une utilisation avec un autre serveur cible directement en executant le client avec Java, vous trouverez [ici](https://github.com/jzaehrin/Teaching-HEIGVD-RES-2019-Labo-SMTP/releases/tag/1.0) une archive contenant le projet compilé avec le dossier de configuration par défaut.
 Il vous suffira d'éxecuter le projet avec la commande suivante après avoir configurer le client comme vous le désirez :
