@@ -1,5 +1,11 @@
 #! /bin/bash
-path=$(dirname "$(readlink -f "$0")")
+realpath() {
+    [[ $1 = /* ]] && echo "$1" || echo "$PWD/${1#./}"
+}
+
+path=$(realpath "${0%/*}")
+
+echo $path
 
 if [[ "$(docker images -q smtpclient 2> /dev/null)" == "" ]]
 then
