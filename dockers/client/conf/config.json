@@ -1,0 +1,6 @@
+{
+  "hostname": "localhost",
+  "port": 1025,
+  "domain": "local",
+  "log_level": "INFO"
+}

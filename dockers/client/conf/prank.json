@@ -1,0 +1,25 @@
+{
+  "mailing": [
+    "victim1@mail.org",
+    "victim2@mail.org",
+    "victim3@mail.org",
+    "victim4@mail.org",
+    "victim5@mail.org",
+    "victim6@mail.org",
+    "victim7@mail.org",
+    "victim8@mail.org",
+    "victim9@mail.org",
+    "victim10@mail.org"
+  ],
+  "nb_groups": 3,
+  "mails": [
+    {
+      "subject": "sujet en français",
+      "message": "Test de contenu en français avec\nDes\nRetour à la ligne !"
+    },
+    {
+      "subject": "Subject in english",
+      "message": "Test without newlines..."
+    }
+  ]
+}
