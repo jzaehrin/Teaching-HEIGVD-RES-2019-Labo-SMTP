@@ -13,4 +13,4 @@ then
 fi
 
 echo "Running image \"mockmockserver\"."
-docker run -d --name mockmockserver --rm -p 1025:1025 -p 8080:8080 mockmock &>/dev/null
+docker run -d --name mockmockserver --rm -p 1025:1025 -p 8080:8080 mockmock
