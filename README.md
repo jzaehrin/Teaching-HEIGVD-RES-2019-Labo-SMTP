@@ -9,6 +9,31 @@ La gestion d'authentification est intéractive et demandé automatiquement si le
 
 ## Utilisation avec MockMock: Mock SMTP serveur
 
+Afin de permettre un déploiement simplifié de l'application pour une utilisation avec MockMock server,
+nous avons décidé de mettre deux images Dockers à disposition. 
+La première pour accueillir le serveur MockMock, exposant un port pour la communication SMTP (1025),
+ainsi qu'un autre port donnant accès à l'interface web (8080).
+La seconde image encapsule l'application client, et permet de ce fait une utilisation interractive.
+
+Ces deux images, présentent respectivement dans le dossier `dockers/mockmock` et `dockers/client`,
+peuvent être construite et voir leur *container* exécuté à l'aide de leur script `run.sh`.
+
+Cependant, comme l'application client doit pouvoir accéder au port SMTP de MockMock,
+nous avons également mis à disposition un fichier `run.sh` global qui s'assure de respecter cette séquence.
+Ainsi, dans un premier temps, le conteneur MockMock sera construit sur la base du dernier fichier `jar` disponible sur github.
+Ensuite, ce conteneur sera exécuté. Dans un second temps, le conteneur de l'application client sera construit à son tour.
+Enfin, au moment son exécution, ce dernier va monter le dossier `conf/` présent à l'emplacement du `Dockerfile`,
+et se connecter au premier conteneur. 
+
+À noter qu'au moment de son exécution, le second conteneur va modifier le *hostname* et le *port* présent 
+dans le fichier `config.json` afin d'y substituer les bonnes valeurs (dépendante du conteneur connecté).
+Ainsi, si le client désire changer le port de MockMock, ou même changer la nature du conteneur connecté,
+le premier port exposé sera retrouvé de manière automatique.
+
+Finalement, de la même manière, un fichier `stop.sh` permet d'arrêter le conteneur MockMock, l'autre s'arrêtant
+automatiquement à la fin de son exécution. Par soucis d'analogie, un script `stop.sh` global permettra également
+de stopper toute la séquence.
+
 ## Usage
 
 Les deux configurations suivantes permettent de définir le comportement et le serveur cible d'envoi. Ils sont au format JSON.
