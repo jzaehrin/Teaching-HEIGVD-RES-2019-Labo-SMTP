@@ -8,9 +8,8 @@ fi
 
 if [[ "$(docker ps -f name=mockmockserver -q 2>/dev/null)" != "" ]]
 then
-    echo "Running container found. Stopping it!"
-    docker stop mockmockserver &>/dev/null
+    echo "Running container found. If you want to stop it, run the stop.sh script."
+else
+    echo "Running image \"mockmockserver\"."
+    docker run -d --name mockmockserver --rm -p 1025:1025 -p 8080:8080 mockmock
 fi
-
-echo "Running image \"mockmockserver\"."
-docker run -d --name mockmockserver --rm -p 1025:1025 -p 8080:8080 mockmock
